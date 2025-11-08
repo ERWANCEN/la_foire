@@ -12,6 +12,7 @@ app.use(express.json());
 // ROUTER
 const userRouter = require('./router/user.router');
 const articleRouter = require('./router/article.router');
+const avisRouter = require('./router/avis.router');
 
 // MONGO
 mongoose
@@ -22,6 +23,7 @@ mongoose
 // PREFIX
 app.use("/api/user", userRouter);
 app.use("/api/article", articleRouter);
+app.use("/api/avis", avisRouter);
 
 // PORT
 const PORT = process.env.PORT || 8080;
