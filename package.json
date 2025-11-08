@@ -1,0 +1,23 @@
+{
+  "name": "la_foire",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ERWANCEN/la_foire.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ERWANCEN/la_foire/issues"
+  },
+  "homepage": "https://github.com/ERWANCEN/la_foire#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
