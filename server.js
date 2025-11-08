@@ -10,7 +10,7 @@ dotenv.config();
 app.use(express.json());
 
 // ROUTER
-
+const userRouter = require('./router/user.router');
 
 // MONGO
 mongoose
@@ -19,7 +19,7 @@ mongoose
     .catch(error => console.log(error))
 
 // PREFIX
-
+app.use("/api/user", userRouter);
 
 // PORT
 const PORT = process.env.PORT || 8080;
