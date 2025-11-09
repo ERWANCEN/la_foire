@@ -16,7 +16,7 @@ router.get('/all', async (req, res) => {
     } catch (error) {
         res.status(500).json(error.message);
     }
-})
+});
 
 //GET by ID - Récupérer l'article correspondant à l'ID entré dans l'url
 router.get('/get/:id', async (req, res) => {
@@ -31,37 +31,53 @@ router.get('/get/:id', async (req, res) => {
     } catch (error) {
         res.status(500).json(error.message);
     }
-})
+});
 
-// =================================
-// À essayer une fois qu'Avis sera créé
-// =================================
 // GET - Récupérer l'avis d'un article
 router.get('/get-article-avis/:id', async (req, res) => {
     try {
         const { id } = req.params;
 
-        const article = await ModelArticle.findById(id);
+        const article = await ModelArticle.findById(id).populate('avis', 'comment');
 
-        if(!article) return res.status(404).json(error.message);
+        if(!article) return res.status(404).json('ARTICLE NOT FOUND');
 
-        const avisArticle = await ModelArticle.findById(id).avis;
-
-        res.status(200).json(avisArticle);
+        res.status(200).json(article.avis);
     } catch (error) {
         res.status(500).json(error.message);
     }
-})
-// =================================
-// =================================
+});
 
-// =================================
-// Trier par prix à créer
-// =================================
+// GET - Trier les articles par prix
+router.get('/filter-articles-by-price', async (req, res) => {
+    try {
+        const articlesByPrice = await ModelArticle.find().sort({ price: 1 });
 
-// =================================
-// Trier par note à créer
-// =================================
+        if(!articlesByPrice) return res.status(404).json('NO ARTICLES FOUND');
+
+        res.status(200).json(articlesByPrice);
+    } catch (error) {
+        res.status(500).json(error.message)
+    }
+});
+
+// GET - Trier les articles par note
+router.get('/filter-articles-by-rating', async (req, res) => {
+    try {
+        const articlesByRating = await ModelArticle.find().populate('avis', 'rating');
+
+        articlesByRating.sort((a, b) => {
+            // Condition permettant de vérifier si un avis existe, si oui, est-ce qu'il existe un rating, si oui, le prendre, sinon affecter -infinity, pour l'avoir en fin de classement
+            const ra = a.avis?.rating ?? -Infinity;  
+            const rb = b.avis?.rating ?? -Infinity;
+            return rb - ra;
+        });
+
+        res.status(200).json(articlesByRating);
+    } catch (error) {
+        res.status(500).json(error.message);
+    }
+});
 
 // POST - Ajouter un article
 router.post('/add', async (req, res) => {
@@ -71,7 +87,7 @@ router.post('/add', async (req, res) => {
     } catch (error) {
         res.status(500).json(error.message);
     }
-})
+});
 
 // UPDATE - Mettre à jour les informations d'un article
 router.put('/update/:id', async (req, res) => {
@@ -86,7 +102,7 @@ router.put('/update/:id', async (req, res) => {
     } catch (error) {
         res.status(500).json(error.message);
     }
-})
+});
 
 // DELETE - Supprimer un article
 router.delete('/delete/:id', async (req, res) => {
@@ -101,6 +117,6 @@ router.delete('/delete/:id', async (req, res) => {
     } catch (error) {
         res.status(500).json(error.message);
     }
-})
+});
 
 module.exports = router;
