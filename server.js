@@ -4,9 +4,11 @@ const express = require('express');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const app = express();
+const CORS = require('cors');
 dotenv.config();
 
 // MIDDLEWARES
+app.use(CORS());
 app.use(express.json());
 
 // ROUTER
